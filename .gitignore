@@ -16,6 +16,9 @@ crash.*.log
 *.tfvars
 *.tfvars.json
 
+# Environment variables
+.env
+
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
 override.tf
@@ -35,3 +38,16 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+
+# Locally exported secrets — never commit these
+talosconfig
+kubeconfig
+*.talosconfig
+*.kubeconfig
+
+# Terraform variable files with real values
+terraform.tfvars
+
+# Temp directories created by upgrade/reset provisioners
+/tmp/talos-*/

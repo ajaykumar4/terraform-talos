@@ -1,0 +1,151 @@
+##############################################################################
+# terraform.tfvars.example
+# Copy to terraform.tfvars and fill in your values.
+# Real terraform.tfvars is git-ignored — never commit secrets.
+##############################################################################
+
+###############################################################################
+# MinIO — S3-compatible Terraform state backend
+# Endpoint and bucket are passed via flags during 'terraform init'.
+# Credentials go in .env (git-ignored):
+#   export AWS_ACCESS_KEY_ID="your-minio-access-key"
+#   export AWS_SECRET_ACCESS_KEY="your-minio-secret-key"
+###############################################################################
+minio_endpoint = "http://minio.local:9000"
+###############################################################################
+# Passbolt (set sensitive values via env vars)
+#   export TF_VAR_passbolt_private_key="$(cat ~/.gnupg/passbolt.asc)"
+#   export TF_VAR_passbolt_passphrase="my-passphrase"
+###############################################################################
+passbolt_url = "https://passbolt.example.com"
+
+# Optional: UUID of Passbolt entry whose password = cluster API endpoint URL
+passbolt_resource_id_cluster_endpoint = ""
+
+###############################################################################
+# Cluster identity
+###############################################################################
+cluster_name         = "kubernetes"
+cluster_node_network = "192.168.8.0/24"
+cluster_gateway      = "192.168.8.1"
+cluster_vip          = "192.168.8.200"
+
+# By default, Cloudflare DNS (1.1.1.1, 1.0.0.1) are already included.
+# Uncomment to override these defaults with your own network servers:
+# cluster_dns_servers = [
+#   "1.1.1.1",
+#   "1.0.0.1",
+# ]
+
+# By default, NTP (162.159.200.1, 162.159.200.123) are already included.
+# Uncomment to override these defaults with your own network servers:
+# cluster_ntp_servers = [
+#   "162.159.200.1",
+#   "162.159.200.123",
+# ]
+
+# By default, 10.42.0.0/16 is already included.
+# Uncomment to override the pod CIDR for the cluster:
+# cluster_pod_cidr = "10.42.0.0/16"
+
+# By default, 10.43.0.0/16 is already included.
+# Uncomment to override the service CIDR for the cluster:
+# cluster_svc_cidr = "10.43.0.0/16"
+
+# By default, 127.0.0.1 and cluster_vip are already included.
+# Uncomment to add any EXTRA certificate SANs you need for the API server:
+# cluster_api_tls_sans = [
+#   "kube.mylab.local",
+# ]
+
+###############################################################################
+# Control-plane nodes  (REQUIRED — min 1, must be odd for etcd quorum)
+#
+# Single-node example (current home-lab):
+###############################################################################
+controlplane_nodes = {
+  "home-lab" = {
+    ip             = "192.168.8.2"
+    install_disk   = "/dev/sdc"
+    interface_mac  = "d8:5e:d3:0a:e9:75"
+    mtu            = 1500
+    schematic_id   = "1e17720baa2217bdf64a7caa256011144fce07af5dd12ce18baed735789e7c81"
+    secureboot     = false
+    encrypt_disk   = false
+    kernel_modules = []
+  }
+}
+
+# 3-node HA example (uncomment and adjust):
+# controlplane_nodes = {
+#   "cp-1" = {
+#     ip             = "192.168.8.10"
+#     install_disk   = "/dev/sda"
+#     interface_mac  = "aa:bb:cc:dd:ee:01"
+#     mtu            = 1500
+#     schematic_id   = ""
+#     secureboot     = false
+#     encrypt_disk   = false
+#     kernel_modules = []
+#   }
+#   "cp-2" = {
+#     ip             = "192.168.8.11"
+#     install_disk   = "/dev/sda"
+#     interface_mac  = "aa:bb:cc:dd:ee:02"
+#     mtu            = 1500
+#     schematic_id   = ""
+#     secureboot     = false
+#     encrypt_disk   = false
+#     kernel_modules = []
+#   }
+#   "cp-3" = {
+#     ip             = "192.168.8.12"
+#     install_disk   = "/dev/sda"
+#     interface_mac  = "aa:bb:cc:dd:ee:03"
+#     mtu            = 1500
+#     schematic_id   = ""
+#     secureboot     = false
+#     encrypt_disk   = false
+#     kernel_modules = []
+#   }
+# }
+
+###############################################################################
+# Worker nodes  (OPTIONAL — min 0, max N)
+#
+# Leave as {} to run workloads on control-plane nodes instead
+# (allowSchedulingOnControlPlanes = true is already set in the controller patch).
+###############################################################################
+worker_nodes = {}
+
+# Worker example (uncomment to add dedicated workers):
+# worker_nodes = {
+#   "worker-1" = {
+#     ip             = "192.168.8.20"
+#     install_disk   = "/dev/sda"
+#     interface_mac  = "aa:bb:cc:dd:ff:01"
+#     mtu            = 1500
+#     schematic_id   = ""
+#     secureboot     = false
+#     encrypt_disk   = false
+#     kernel_modules = []
+#   }
+#   "worker-2" = {
+#     ip             = "192.168.8.21"
+#     install_disk   = "/dev/sda"
+#     interface_mac  = "aa:bb:cc:dd:ff:02"
+#     mtu            = 1500
+#     schematic_id   = ""
+#     secureboot     = false
+#     encrypt_disk   = false
+#     kernel_modules = []
+#   }
+# }
+
+###############################################################################
+# Lifecycle operations
+# Do NOT set these here. Instead, trigger them via CLI when needed:
+#   terraform apply -var="upgrade-nodes=true"
+#   terraform apply -var="upgrade-k8s=true"
+#   terraform apply -var="reset=true"
+###############################################################################
