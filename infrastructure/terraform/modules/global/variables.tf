@@ -1,0 +1,11 @@
+variable "talos_version" { type = string }
+variable "cluster_name" { type = string }
+variable "cluster_api_addr" { type = string }
+variable "cluster_api_tls_sans" { type = list(string) }
+variable "cluster_pod_cidr" { type = string }
+variable "cluster_svc_cidr" { type = string }
+variable "node_cidr" { type = string }
+variable "node_ntp_servers" { type = list(string) }
+variable "node_dns_servers" { type = list(string) }
+variable "controlplane_nodes" { type = map(any) }
+variable "worker_nodes" { type = map(any) }
