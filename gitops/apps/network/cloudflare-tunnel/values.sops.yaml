@@ -1,0 +1,95 @@
+configMaps:
+  config:
+    data:
+      config.yaml: ENC[AES256_GCM,data:oJSaKiH5quFJENy1E/Eiy03+OjXHWniQoFLuOCQkn6p2tEc6XiCKntrm1boie/Z/LUWrUoJVCmMwQ/f4kjaA83Sou9sSOqAbebyiePZL5bh2vq2UC+E5PsQJggUTxm06aGQmh0jOm97VkK5/SggqhOaDyFZhSywlgNNMGcW+ZLPfPy6MqVC9HGEO7osm2SyS9dGQH4nYtViBeH3R6WtrA+euuY+x+zAfh3+MsOs2+5A8Yb1Nyg0tSKcqr/KqalD/DcuKQcGBv6HpQnFIHq9xa8l4ZOiTsq0+gb4JOodYfAPDHA==,iv:c3V7397BG0rQkwqfB7xVH2KpeyWgykrAsN1mhzqmQaY=,tag:X+55iJngGLtDdxS+EPs1Qg==,type:str]
+controllers:
+  cloudflare-tunnel:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    containers:
+      app:
+        args:
+          - tunnel
+          - run
+        env:
+          NO_AUTOUPDATE: true
+          TUNNEL_METRICS: 0.0.0.0:8080
+          TUNNEL_POST_QUANTUM: true
+          TUNNEL_TRANSPORT_PROTOCOL: quic
+        envFrom:
+          - secretRef:
+              name: cloudflare-tunnel-secret
+        image:
+          repository: docker.io/cloudflare/cloudflared
+          tag: 2026.3.0
+        probes:
+          liveness:
+            custom: true
+            enabled: true
+            spec:
+              failureThreshold: 3
+              httpGet:
+                path: /ready
+                port: 8080
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+          readiness:
+            custom: true
+            enabled: true
+            spec:
+              failureThreshold: 3
+              httpGet:
+                path: /ready
+                port: 8080
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 10m
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+    strategy: RollingUpdate
+defaultPodOptions:
+  securityContext:
+    runAsGroup: 65534
+    runAsNonRoot: true
+    runAsUser: 65534
+persistence:
+  config-file:
+    globalMounts:
+      - path: /etc/cloudflared/config.yaml
+        subPath: config.yaml
+    identifier: config
+    type: configMap
+service:
+  app:
+    ports:
+      http:
+        port: 8080
+serviceMonitor:
+  app:
+    enabled: false
+sops:
+  age:
+    - recipient: age1nekqln4rq0mqqgv650u5a7zvgdeh472phq2ckl7ufzan04qlj90q3guut8
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB0c0JhRjV6UlJHSjZoNHFX
+        Nkl5R01CeThjZXMyL3psb0NaclNtOTJiUnlRCjduTm02NDNDVGo1c2k3cjg1aDVY
+        dGszUmY3VGc4OTBJQUhtK215TFkxSUEKLS0tIEtnM0M2aEdpNitrS2IvNG1lZWZ2
+        a09LSnFuMlpvYWNGMDRPY0tLNXZMc28KopbUGxaTMby3YfRSEOJGR6l18DX5UR+M
+        EVBNwvwbU+bfHcpjFGCKGXnJQDIsPRGr2W7WNcpKCax+JwGkbjVMvg==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2026-03-18T16:12:23Z"
+  mac: ENC[AES256_GCM,data:lH8RdhsuRavk5QQXsuqq4U+2kX7N6BRXVyfi0fJSpAMUG81ATlW+QqU/HmluNSJL/J+3MwQrcmiyOItyPI/pKPj+HlhO4VTolWQt5qRI+xx+nYy9ay79jcq+Vmm8Qf+Mp9CEu90INnECQbO5JWdeBORMLOVLuBEr9fCECsJ5C94=,iv:wDKLZzHNtwIT1gmnr6Pm9/zgzEWR1lWYpRLIT4rW7MI=,tag:eRBTMsXcvL9zz/vpC+zljg==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.12.1

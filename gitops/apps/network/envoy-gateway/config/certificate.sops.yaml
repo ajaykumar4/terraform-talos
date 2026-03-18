@@ -1,0 +1,33 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: aknuk-dev-production
+spec:
+  dnsNames:
+    - aknuk.dev
+    - '*.aknuk.dev'
+  duration: 160h
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-production
+  privateKey:
+    algorithm: ECDSA
+  secretName: aknuk-dev-production-tls
+  usages:
+    - digital signature
+sops:
+  age:
+    - recipient: age1nekqln4rq0mqqgv650u5a7zvgdeh472phq2ckl7ufzan04qlj90q3guut8
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAxZ3FWZFRENEpoS2RWeWhi
+        SEQwZjg1ZkhzTVF1ZUt6QzU0YXNTLzZtOXpBCmZBZVVFOVRZVkVRdjlza0gvakNB
+        aXVnZjh1NWFva1B6NW5XSnN5ZXRoVFUKLS0tIDQ5WXhienFzRWZqUmtJM2drVnVt
+        QzR4Q2pQYWswaGlaK1R0MXRsZkRmNEkKAOlv3qPbXzaMgSLpGGbkRa82hT88ObTB
+        d6N/ZRwvboA/KC4iX2MSlNFg81djx9xP8IjZbZffks4irIt2J6BU/g==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2026-03-18T16:05:51Z"
+  mac: ENC[AES256_GCM,data:5dYuJs5F9mvCHhxdmXDownhHUzCVbSn2eLcxWmEc+OrboW5iAhFBjZs/iluIVbIANbUByGH0FNO+KS0JLMOzJEcA6s4/8WFVnNIF8EM+GkchIoYfY6p6xPFg+oe+Vea97a54t7Oa3dgS1DXJqvs7P5gyDF0LPLQA35QB840QF5M=,iv:V0+4fT5i48KT2OJ7riulZkGVwMUAkJBpBh4T0uVtW18=,tag:vzkOP7KLodgs60KJ6De3YA==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.12.1

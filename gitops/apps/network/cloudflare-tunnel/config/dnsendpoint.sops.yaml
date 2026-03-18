@@ -1,0 +1,26 @@
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: cloudflare-tunnel
+spec:
+  endpoints:
+    - dnsName: external.aknuk.dev
+      recordType: CNAME
+      targets:
+        - 82a675b2-425d-4816-965e-b81fa9053660.cfargotunnel.com
+sops:
+  age:
+    - recipient: age1nekqln4rq0mqqgv650u5a7zvgdeh472phq2ckl7ufzan04qlj90q3guut8
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBJNzVsc0Rla3FvSm1TQUxq
+        VVBmNDFTRlI2WHQvUGF2cWtwenV3eG5ZSmpZClkvQ1ZpL2V5S1E3eDRXMU1adm0v
+        RnlrRHk4V2JyWjhTbzh5d1VDbVd0aDAKLS0tIFoyOGlpZHZESSs4dFphZVR1T0FL
+        b0hiUXllYktLV3FJZmx1dHFtL214czgKQUetIICM9XcSKEeaQw1+08nzPOlTGjeX
+        RYqKKYgDeNllNKJlKhYP04FuqfeACIsBq7tbMTFKtx6uiuFGzzLGfw==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2026-03-18T16:05:51Z"
+  mac: ENC[AES256_GCM,data:faiXI8ax1mjfLLNDnVy60kObbCzUrhAHmBKwK9ihtVzoX53PbfgK5Lq3IdC57Xlw5H32DmYWUY3v9eLzmH7Gyn7H41TNXCvpjxnppxbC0b1+PKO9KeCSJ4d/OIHQNAGiYMjXPfQg18rrNGN1YNOl/wgOSdH/wtMSjuVrW0y2FoQ=,iv:GmCzt/OIR42XC/nhVxpniukNS9cVm0NxllVWR6S4PM0=,tag:ctfjNSBCnGNyF//7eybLqw==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.12.1

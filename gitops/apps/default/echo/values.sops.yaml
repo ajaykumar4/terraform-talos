@@ -1,0 +1,28 @@
+route:
+  app:
+    hostnames:
+      - echo.aknuk.dev
+    parentRefs:
+      - name: envoy-external
+        namespace: network
+        sectionName: https
+    rules:
+      - backendRefs:
+          - identifier: app
+            port: 8080
+sops:
+  age:
+    - recipient: age1nekqln4rq0mqqgv650u5a7zvgdeh472phq2ckl7ufzan04qlj90q3guut8
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBzMkFPTjVGV2NyWDdoNHhm
+        SkVtZjFPbUJEYXpQOURxQzNobjVYaE5pNDNnCjQyQ0dkdVFZa2c1VmhjcnhKT3hF
+        dEV3ZW5GdHRkL3VQVmpLZDBaRXpZNHcKLS0tIExSMHMvOTg5RnpoRWRLVWEybnhu
+        UFFXSmpmall4NmVrUnRCSXBUbHAybEUKLggqjp4sAwH2D04X66/rJ1jTenWmUmfY
+        evP+Uoj0Dfjgfvest00NKrRDaukjQGh99Y4NldLs7L1URHaI/af3cw==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2026-03-18T16:05:51Z"
+  mac: ENC[AES256_GCM,data:aszAT1ImpGMRp12aQ6i0I4XMc1xATvSmPEgbcwxl9sM8VNbSxNV+t1uLa4GoTJWiK5K6EMr+7ntRUIvRhp5VX+NMzjZ2CWvaF2g46SCrbjtAXshrG0uvIao/NEETEmBIcaCpHPH5huOVzrkV1r243z2B8++m/ih6g89nR/AP8Uc=,iv:GmRdZU71plOiSvm5LVaId3RpsDYVjvX8YE05tHzOI60=,tag:oTv2n4yVH7w/KtpnLO4bbg==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.12.1
