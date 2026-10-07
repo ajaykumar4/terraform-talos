@@ -1,0 +1,26 @@
+FROM ${base_image}
+
+# Install dnsmasq and required tools
+RUN apk add --no-cache \
+    dnsmasq \
+    busybox-extras \
+    curl \
+    wget
+
+# Create necessary directories
+RUN mkdir -p /etc/dnsmasq.d \
+    && mkdir -p /var/lib/dnsmasq \
+    && mkdir -p /var/lib/tftp
+
+# Expose DHCP and TFTP ports
+EXPOSE 67/udp 69/udp
+
+# Copy entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Set entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Default command
+CMD ["dnsmasq", "-d", "-q"]

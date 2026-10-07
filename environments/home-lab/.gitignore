@@ -1,0 +1,40 @@
+# Terraform Files
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfvars
+!terraform.tfvars.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*~
+
+# Logs
+*.log
+crash.log
+
+# Ignore overrides
+local.override.tf
+local.override.tf.json
+*_override.tf
+*_override.tf.json
+
+# OS-specific
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+
+# PXE assets (not tracked)
+pxe-assets/
+tftp-root/

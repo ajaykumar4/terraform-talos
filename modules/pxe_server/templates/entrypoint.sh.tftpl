@@ -1,0 +1,41 @@
+#!/bin/sh
+# PXE Server Container Entrypoint
+# This script starts dnsmasq in the container
+
+set -e
+
+PXE_ROOT="${pxe_root_path}"
+
+echo "Starting PXE Server (dnsmasq)..."
+echo "PXE Root: $PXE_ROOT"
+echo "================================"
+
+# Ensure directories exist
+mkdir -p "$PXE_ROOT"
+mkdir -p /var/lib/dnsmasq
+
+# Copy configuration files if they exist
+if [ -f /config/dnsmasq.conf ]; then
+    echo "Using dnsmasq configuration from /config/dnsmasq.conf"
+    cp /config/dnsmasq.conf /etc/dnsmasq.conf
+fi
+
+if [ -f /config/dhcp-hosts.conf ]; then
+    echo "Configuring DHCP hosts..."
+    cp /config/dhcp-hosts.conf /etc/dnsmasq.d/dhcp-hosts.conf
+fi
+
+# Copy boot files
+if [ -d /boot ]; then
+    echo "Copying boot files..."
+    cp -r /boot/* "$PXE_ROOT/" 2>/dev/null || true
+fi
+
+echo ""
+echo "================================"
+echo "Configuration ready!"
+echo "================================"
+echo ""
+
+# Execute dnsmasq
+exec "$@"
