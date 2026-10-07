@@ -1,0 +1,7 @@
+#!ipxe
+# iPXE config for Debian 13.7 (Trixie)
+set server_ip ${macbook_ip}
+
+kernel http://$${server_ip}:8080/debian/vmlinuz initrd=initrd.magic net.ifnames=0 hostname=${hostname} ip=${ip}::${router_ip}:255.255.255.0::eth0:off
+initrd http://$${server_ip}:8080/debian/initrd.img
+boot

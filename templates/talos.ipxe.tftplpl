@@ -1,0 +1,7 @@
+#!ipxe
+# iPXE config for Talos Linux 1.14.2
+set server_ip ${macbook_ip}
+
+kernel http://$${server_ip}:8080/talos/vmlinuz talos.platform=metal talos.config=http://$${server_ip}:8080/talos/${hostname}-config.yaml ip=${ip}::${router_ip}:255.255.255.0:${hostname}:eth0:off
+initrd http://$${server_ip}:8080/talos/initramfs.xz
+boot
